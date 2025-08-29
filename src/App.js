@@ -7,27 +7,27 @@ export default function App() {
 <div className='App-container'>
 <div className="App">
       <header className="App-header">
-        <img src={logo} className='logo' alt="logo"/>
+      <img src={logo} className='logo' alt="logo"/>
       </header>
       <main>
-      <Dictionary defaultKeyword="Sky"/>
+      <Dictionary defaultKeyword="welcome"/>
       </main>
       <footer className='App-footer text-center'>
           This project was coded by Natasha Moyane 💗 and is  open-sourced on
               <a
-               href="#"
+               href="https://github.com/Natasha2702/dictionary_one"
                target="_blank"
                rel="noopener noreferrer"
               >
-               GitHub
+                GitHub
               </a>
-              and hosted on 
-              <a
-                href="#"
+               and it's hosted on 
+               <a
+                href="https://pink-dictionary.netlify.app/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-               Netlify
+                Netlify
               </a>
       </footer>
     </div>

@@ -1,45 +1,71 @@
 import React,{useState} from "react";
 import axios from "axios";
 import "./Dictionary.css";
+import Photos from "./Photos";
 import Results from "./Results";
 
-export default function Dictionary() {
-  let [keyword, setKeyword]=useState("");
+export default function Dictionary(props) {
+  let [keyword, setKeyword]=useState(props.defaultKeyword);
   let [results, setResults]=useState(null);
+  let [loaded, setLoaded] = useState(false);
+  let [photos, setPhotos] = useState(null);
 
   function handleResponse(response){
     setResults(response.data[0]);
   }
   
+   function handlePexelsResponse(response) {
+    setPhotos(response.data.photos);
+   }
 
-  function search(event) {
-    event.preventDefault();
-    
-
+  function search() {
     let apiUrl =`https://api.dictionaryapi.dev/api/v2/entries/en/${keyword}`;
     axios.get(apiUrl).then(handleResponse);
+  
+  
+  let pexelsApiKey =
+      "rcHei7ImQFoQD8yExLFC3aMxv2E2kBqdFSQ40W3N80jxEJmjcr1jHEpY";
+    let pexelsApiUrl = `https://api.pexels.com/v1/search?query=${keyword}&per_page=9`;
+    let headers = { Authorization: `${pexelsApiKey}` };
+    axios.get(pexelsApiUrl, { headers: headers }).then(handlePexelsResponse);
+  
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
   }
 
   function handleKeywordChange(event) {
     setKeyword(event.target.value);
   }
 
+   function load() {
+    setLoaded(true);
+    search();
+  }
+
+  if(loaded){
   return (
     <div className="Dictionary">
       <section>
         <h1>What word should we look up? 😊</h1>
-      <form onSubmit={search}>
+      <form onSubmit={handleSubmit}>
         <input
           type="search"
           onChange={handleKeywordChange}
-          
+          defaultValue={props.defaultKeyword}
         />
         </form> 
          <div className="hint">
             suggested words: sunset, flowers, water...
           </div>
         </section>  
-        <Results results={results}/>   
+        <Results results={results}/> 
+         <Photos photos={photos} />  
     </div>
   );
-}
+} else {
+    load();
+    return "Loading";
+  }}
